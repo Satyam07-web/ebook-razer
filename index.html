@@ -513,6 +513,16 @@
                   <button class="btn-primary w-full py-4 rounded-lg font-bold text-lg mb-6 razorpay-buy-button">
                       🔒 Get Instant Access - ₹249
                   </button>
+
+                 <a
+                      id="pdf-download"
+                      href="https://dccgktcqxvsslxjpkarp.supabase.co/storage/v1/object/sign/ebook/AI-Skills-for-Students.pdf.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yZDJmNTc0NS01ZDdjLTQ3ZTAtOWIwNi1mNGFlNzI5YWI4ZmMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJlYm9vay9BSS1Ta2lsbHMtZm9yLVN0dWRlbnRzLnBkZi5wZGYiLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzg2NjQ4NTM4LCJleHAiOjE4MTc3NTI1Mzh9.snl0EjFckblVJyripbR0yd6XU7wlotSM-qLZqWe3MBo"
+                      target="_blank"
+                      style="display: none;"
+                      class="btn-primary w-full py-4 rounded-lg font-bold text-lg mb-6 text-center"
+                 >
+                      📕 Download Your AI Skills PDF
+                  </a>          
                 
                 <p class="text-xs text-slate-400 mb-4">
                     💳 UPI • Debit Card • Credit Card • Instant PDF Download
@@ -798,13 +808,20 @@
                         );
 
                         const result = await verifyResponse.json();
+                       if (result.success) {
+                           alert("Payment successful! 🎉");
 
-                        if (result.success) {
-                            alert("Payment successful! 🎉");
+                           const downloadButton = document.getElementById("pdf-download");
+
+                           if (downloadButton) {
+                               downloadButton.style.display = "block";
+                            }
+
                         } else {
-                            alert("Payment verification failed.");
-                        }
-                    },
+                             alert("Payment verification failed.");
+                       }
+                       
+                      },
 
                     theme: {
                         color: "#6366F1"
