@@ -165,7 +165,8 @@
             h1 { font-size: 2rem; }
             h2 { font-size: 1.5rem; }
         }
-    </style>
+    </style> 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body class="bg-slate-950 text-white overflow-x-hidden">
 
@@ -193,9 +194,9 @@
                 </div>
                 
                 <!-- CTA Button -->
-                <button class="btn-primary px-6 py-2 rounded-lg font-semibold text-sm">
-                    Get Access - ₹249
-                </button>
+               <button class="btn-primary px-6 py-2 rounded-lg font-semibold text-sm razorpay-buy-button">
+                   Get Access - ₹249
+               </button>
             </div>
         </div>
     </nav>
@@ -241,7 +242,7 @@
                     <!-- CTAs -->
                     <div class="flex flex-col sm:flex-row gap-4"> 
                         
-                         <button class="btn-primary px-8 py-4 rounded-lg font-bold text-lg">
+                         <button class="btn-primary px-8 py-4 rounded-lg font-bold text-lg razorpay-buy-button">
                              Get Instant Access - ₹249
                          </button>
                        
@@ -509,9 +510,9 @@
                     </div>
                 </div>
                 
-                <button class="btn-primary w-full py-4 rounded-lg font-bold text-lg mb-6">
-                    🔒 Get Instant Access - ₹249
-                </button>
+                  <button class="btn-primary w-full py-4 rounded-lg font-bold text-lg mb-6 razorpay-buy-button">
+                      🔒 Get Instant Access - ₹249
+                  </button>
                 
                 <p class="text-xs text-slate-400 mb-4">
                     💳 UPI • Debit Card • Credit Card • Instant PDF Download
@@ -750,7 +751,80 @@
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
-        });
+        }); 
+                   const WORKER_URL =
+            "https://ai-students-payment.parastesatyam17.workers.dev";
+
+        async function startPayment() {
+            try {
+                const response = await fetch(
+                    `${WORKER_URL}/create-order`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+
+                const order = await response.json();
+
+                if (!response.ok || !order.success) {
+                    throw new Error("Order creation failed");
+                }
+
+                const options = {
+                    key: order.key_id,
+                    amount: order.amount,
+                    currency: order.currency,
+                    name: "AI FOR STUDENTS",
+                    description: "AI FOR STUDENTS Ebook",
+                    order_id: order.order_id,
+
+                    handler: async function(payment) {
+                        const verifyResponse = await fetch(
+                            `${WORKER_URL}/verify-payment`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: payment.razorpay_order_id,
+                                    razorpay_payment_id: payment.razorpay_payment_id,
+                                    razorpay_signature: payment.razorpay_signature
+                                })
+                            }
+                        );
+
+                        const result = await verifyResponse.json();
+
+                        if (result.success) {
+                            alert("Payment successful! 🎉");
+                        } else {
+                            alert("Payment verification failed.");
+                        }
+                    },
+
+                    theme: {
+                        color: "#6366F1"
+                    }
+                };
+
+                const razorpay = new Razorpay(options);
+                razorpay.open();
+
+            } catch (error) {
+                console.error(error);
+                alert("Unable to start payment. Please try again.");
+            }
+        }
+
+        document
+            .querySelectorAll(".razorpay-buy-button")
+            .forEach(button => {
+                button.addEventListener("click", startPayment);
+            });
     </script>
 </body>
 </html>
