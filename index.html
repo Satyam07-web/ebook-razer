@@ -807,7 +807,8 @@
                             }
                         );
 
-                        const result = await verifyResponse.json();
+                        const result = await verifyResponse.json(); 
+                        alert("Worker response: " + JSON.stringify(result));
                        if (result.success) {
                            alert("Payment successful! 🎉");
 
