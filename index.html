@@ -814,7 +814,8 @@
 
                            const downloadButton = document.getElementById("pdf-download");
 
-                           if (downloadButton) {
+                           if (downloadButton) { 
+                               downloadButton.href = result.download_url:
                                downloadButton.style.display = "block";
                             }
 
