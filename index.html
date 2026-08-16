@@ -819,7 +819,9 @@
                             }
                         );
 
-                       const result = await verifyResponse.json();
+                       const result = await verifyResponse.json();   
+                       console.log("WORKER RESULT:", result);
+alert("Download URL: " + result.download_url); 
 
 if (result.success && result.download_url) {
 
