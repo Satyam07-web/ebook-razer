@@ -819,9 +819,9 @@
                             }
                         );
 
-                       const result = await verifyResponse.json();   
-                       console.log("WORKER RESULT:", result);
-alert("Download URL: " + result.download_url); 
+                      const result = await verifyResponse.json();
+
+console.log("Worker result:", result);
 
 if (result.success && result.download_url) {
 
@@ -830,13 +830,14 @@ if (result.success && result.download_url) {
     if (downloadButton) {
         downloadButton.href = result.download_url;
         downloadButton.style.display = "block";
+
+        // Open PDF
+        downloadButton.click();
     }
 
-    // Open the PDF automatically
-    window.location.href = result.download_url;
-
 } else {
-    alert("Payment verification failed.");
+    console.error("PDF URL missing:", result);
+    alert("Payment verified, but PDF link was not received.");
 }
                        
                       },
