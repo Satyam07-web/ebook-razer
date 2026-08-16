@@ -826,14 +826,14 @@ console.log("Worker result:", result);
 if (result.success && result.download_url) {
 
     const downloadButton = document.getElementById("pdf-download");
+       if (downloadButton) {
+    downloadButton.href = result.download_url;
+    downloadButton.style.display = "block";
+}
 
-    if (downloadButton) {
-        downloadButton.href = result.download_url;
-        downloadButton.style.display = "block";
-
-        // Open PDF
-        downloadButton.click();
-    }
+window.location.assign(result.download_url);
+   
+    
 
 } else {
     console.error("PDF URL missing:", result);
